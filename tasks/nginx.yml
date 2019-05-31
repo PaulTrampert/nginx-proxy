@@ -3,3 +3,13 @@
   apt:
     name: nginx
     state: latest
+
+- name: Nginx base config
+  file:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+
+- name: Configure https redirect
+  file:
+    src: default.conf
+    dest: /etc/nginx/conf.d/default.conf
