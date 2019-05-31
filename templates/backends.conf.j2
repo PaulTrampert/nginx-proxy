@@ -1,0 +1,7 @@
+{% for site in sites %}
+upstream {{site.name}} {
+  {% for backend in site.backends %}}
+  server {{backend}};
+  {% endfor %}}
+}
+{% endfor %}
