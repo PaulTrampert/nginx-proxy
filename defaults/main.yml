@@ -1,2 +1,5 @@
 ---
-# defaults file for nginx-proxy
+manage_certs: no
+fullchain_location: ''
+private_key_location: ''
+sites: []
