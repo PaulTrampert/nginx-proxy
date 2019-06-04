@@ -1,3 +1,37 @@
 ---
-- name: NGNIX
-  include: nginx.yml
+- name: Install nginx
+  notify: Restart nginx
+  package:
+    name: nginx
+    state: latest
+
+- name: Ensure nginx is started
+  service:
+    name: nginx
+    enabled: yes
+    state: started
+
+- name: Nginx base config
+  notify: Restart nginx
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+
+- name: Configure http
+  notify: Restart nginx
+  copy:
+    src: default.conf
+    dest: /etc/nginx/conf.d/default.conf
+
+- name: Setup Backends
+  notify: Restart nginx
+  template:
+    src: backends.conf.j2
+    dest: /etc/nginx/conf.d/backends.conf
+
+- name: Setup Hosts
+  notify: Restart nginx
+  template:
+    src: hosts.conf.j2
+    dest: /etc/nginx/conf.d/hosts.conf
+
