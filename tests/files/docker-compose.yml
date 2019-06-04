@@ -13,7 +13,7 @@ services:
       - /etc/pebble-conf.json:/test/config/pebble-config.json
   challtestsrv:
     image: letsencrypt/pebble-challtestsrv:v2.0.0
-    command: pebble-challtestsrv -defaultIPv6 "" -defaultIPv4 10.30.50.3
+    command: pebble-challtestsrv -defaultIPv6 "" -defaultIPv4 172.17.0.1
     ports:
       # HTTP Management Interface
       - 8055:8055
