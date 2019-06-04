@@ -48,5 +48,11 @@
     - name: Start pebble
       docker_compose:
         project_src: /root/pebble
+    - name: Add pebble CA to trusted CA's
+      copy:
+        src: pebble.minica.pem
+        dest: /usr/local/share/ca-certificates/pebble.minica.crts
+    - name: Update CA Certs
+      command: update-ca-certificates
   roles:
     - nginx-proxy
