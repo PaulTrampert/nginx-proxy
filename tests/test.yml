@@ -1,6 +1,14 @@
 ---
 - hosts: all
   become: yes
+  vars:
+    sites:
+    - name: test
+      host: test.com
+      backends: [ "localhost:8055" ]
+      server_settings: []
+      location_settings: []
+
   pre_tasks:
     - name: Install apt prerequisites
       apt:
@@ -51,7 +59,7 @@
     - name: Add pebble CA to trusted CA's
       copy:
         src: pebble.minica.pem
-        dest: /usr/local/share/ca-certificates/pebble.minica.crts
+        dest: /usr/local/share/ca-certificates/pebble.minica.crt
     - name: Update CA Certs
       command: update-ca-certificates
   roles:

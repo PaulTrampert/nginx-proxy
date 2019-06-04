@@ -4,10 +4,10 @@ server {
 	server_name {{site.host}};
 
   ssl on;
-  ssl_certificate {{site.fullchain_location | default(fullchain_location)}};
-  ssl_certificate_key {{site.private_key_location | default(private_key_location)}};
+  ssl_certificate /etc/ssl/certs/acme.pem;
+  ssl_certificate_key /etc/ssl/private/acme_csr_key.pem;
 
-	{% for setting in site.server_setting %}
+	{% for setting in site.server_settings %}
 	{{setting}}
 	{% endfor %}
 
@@ -21,7 +21,7 @@ server {
 		proxy_read_timeout 90s;
 		proxy_redirect http://{{site.name}} https://{{site.host}};
 
-		{% for setting in site.location_setting %}
+		{% for setting in site.location_settings %}
 		{{setting}}
 		{% endfor %}
   }

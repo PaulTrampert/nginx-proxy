@@ -1,5 +1,4 @@
 ---
-manage_certs: no
-fullchain_location: ''
-private_key_location: ''
+acme_directory: https://localhost:14000/dir
+acme_account_email: "paul.trampert@ptrampert.com"
 sites: []
