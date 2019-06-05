@@ -8,6 +8,11 @@
       backends: [ "localhost:8055" ]
       server_settings: []
       location_settings: []
+    - name: example
+      host: example2.com
+      backends: [ "localhost:8055" ]
+      server_settings: []
+      location_settings: []
 
   pre_tasks:
     - name: Install apt prerequisites

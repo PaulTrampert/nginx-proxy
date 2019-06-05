@@ -1,30 +1,47 @@
 ---
+- name: Ensure private_directory exists
+  file:
+    path: "{{private_directory}}"
+    state: directory
+
+- name: Ensure csr_directory exists
+  file:
+    path: "{{csr_directory}}"
+    state: directory
+
+- name: Ensure certs_directory exists
+  file:
+    path: "{{certs_directory}}"
+    state: directory
+
 - name: Generate account key
   openssl_privatekey:
-    path: /etc/ssl/private/acme_account.pem
+    path: "{{private_directory}}/acme_account.pem"
     mode: u=rw,g-rwx,o-rwx
 
 - name: Generate CSR private key
   openssl_privatekey:
-    path: /etc/ssl/private/acme_csr_key.pem
+    path: "{{private_directory}}/acme_csr_key.pem"
     mode: u=rw,g-rwx,o-rwx
 
 - name: Default cert signing request
   openssl_csr:
-    path: /root/acme.csr
-    privatekey_path: /etc/ssl/private/acme_csr_key.pem
+    path: "{{csr_directory}}/acme.csr"
+    privatekey_path: "{{private_directory}}/acme_csr_key.pem"
     subject_alt_name: "{{sites | map(attribute='host') | map('regex_replace', '^', 'DNS:') | list}}"
+  register: csr_state
 
 - name: Check Cert
   acme_certificate:
     account_email: "{{acme_account_email}}"
-    account_key_src: /etc/ssl/private/acme_account.pem
+    account_key_src: "{{private_directory}}/acme_account.pem"
     acme_directory: "{{acme_directory}}"
     challenge: http-01
-    csr: /root/acme.csr
-    dest: /etc/ssl/certs/acme.pem
+    csr: "{{csr_directory}}/acme.csr"
+    dest: "{{certs_directory}}/acme.pem"
     acme_version: 2
     terms_agreed: yes
+    force: "{{csr_state is changed}}"
   register: acme_challenge
 
 - name: Fufill challenges
@@ -54,8 +71,8 @@
     account_key_src: /etc/ssl/private/acme_account.pem
     acme_directory: "{{acme_directory}}"
     challenge: http-01
-    csr: /root/acme.csr
-    dest: /etc/ssl/certs/acme.pem
+    csr: "{{csr_directory}}/acme.csr"
+    dest: "{{certs_directory}}/acme.pem"
     data: "{{acme_challenge}}"
     acme_version: 2
     terms_agreed: yes

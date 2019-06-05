@@ -1,4 +1,7 @@
 ---
 acme_directory: https://localhost:14000/dir
 acme_account_email: "paul.trampert@ptrampert.com"
+private_directory: /etc/ssl/private
+csr_directory: /etc/ssl/csr
+certs_directory: /etc/ssl/certs
 sites: []
