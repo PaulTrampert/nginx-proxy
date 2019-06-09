@@ -6,61 +6,8 @@
     - name: test
       host: test.com
       backends: [ "localhost:8055" ]
-      server_settings: []
-      location_settings: []
-
-  pre_tasks:
-    - name: Install apt prerequisites
-      apt:
-        update_cache: yes
-        name: [ 'apt-transport-https', 'ca-certificates', 'curl', 'gnupg-agent', 'software-properties-common', 'python3-pip' ]
-        state: latest
-
-    - name: Install Docker's GPG key
-      apt_key:
-        id: 0EBFCD88
-        url: "https://download.docker.com/linux/ubuntu/gpg"
-
-    - name: Add Docker CE apt repository
-      apt_repository:
-        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
-
-    - name: Install Docker
-      apt:
-        update_cache: yes
-        name: [ docker-ce, docker-ce-cli, containerd.io ]
-        state: latest
-
-    - name: Ensure the docker service is running and enabled
-      service:
-        name: docker
-        enabled: yes
-        state: started
-
-    - name: Install python docker
-      pip:
-        name: [ docker, docker-compose ]
-    - name: Install Docker-compose
-      get_url:
-        url: https://github.com/docker/compose/releases/download/1.24.0/docker-compose-Linux-x86_64
-        dest: /usr/local/bin/docker-compose
-        mode: +x
-    - name: Copy docker-compose.yml to /root/pebble
-      copy:
-        src: docker-compose.yml
-        dest: /root/pebble/
-    - name: Copy pebble-conf.json
-      copy:
-        src: pebble-conf.json
-        dest: /etc/pebble-conf.json
-    - name: Start pebble
-      docker_compose:
-        project_src: /root/pebble
-    - name: Add pebble CA to trusted CA's
-      copy:
-        src: pebble.minica.pem
-        dest: /usr/local/share/ca-certificates/pebble.minica.crt
-    - name: Update CA Certs
-      command: update-ca-certificates
+      server_settings: [ "chunked_transfer_encoding on;" ]
+      location_settings: [ "proxy_set_header Herp Derp;"]
   roles:
+    - pebble
     - nginx-proxy

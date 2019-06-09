@@ -1,2 +1,2 @@
-- name: ubuntu_base
-  src: git+https://github.com/PaulTrampert/ubuntu_base.git
+- name: pebble
+  src: git+https://github.com/PaulTrampert/pebble.git
