@@ -57,8 +57,8 @@
       content: "{{item.value['http-01']['resource_value']}}"
       dest: "/var/www/html/{{item.value['http-01']['resource']}}"
   - name: Configure nginx to serve the challenge response
-    copy:
-      src: acme_verify.conf
+    template:
+      src: acme_verify.conf.j2
       dest: /etc/nginx/nginx.conf
   - name: Restart nginx
     service:

@@ -1,8 +1,11 @@
 ---
+- name: Load OS Variables
+  include_vars: "{{ansible_distribution}}.yml"
+
 - name: Install nginx
   notify: Restart nginx
   package:
-    name: nginx
+    name: "{{nginx_package}}"
     state: latest
 
 - name: Ensure nginx is started
@@ -16,9 +19,14 @@
 
 - name: Nginx base config
   notify: Restart nginx
-  copy:
-    src: nginx.conf
+  template:
+    src: nginx.conf.j2
     dest: /etc/nginx/nginx.conf
+
+- name: Ensure /etc/nginx/conf.d/ exists
+  file:
+    path: /etc/nginx/conf.d/
+    state: directory
 
 - name: Configure http
   notify: Restart nginx

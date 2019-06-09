@@ -1,6 +1,5 @@
-user www-data;
+user {{nginx_user}};
 worker_processes auto;
-pid /run/nginx.pid;
 include /etc/nginx/modules-enabled/*.conf;
 
 events {
@@ -54,12 +53,25 @@ http {
 	# gzip_http_version 1.1;
 	# gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
 
-	##
-	# Virtual Host Configs
-	##
-	include /etc/nginx/conf.d/default.conf;
-	include /etc/nginx/conf.d/backends.conf;
-	include /etc/nginx/conf.d/hosts.conf;
+    server {
+        listen 80;
+
+        location / {
+            root /var/www/html;
+        }
+
+        #charset koi8-r;
+        #access_log  /var/log/nginx/log/host.access.log  ma
+
+        #error_page  404              /404.html;
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   /usr/share/nginx/html;
+        }
+    }
 }
 
 
