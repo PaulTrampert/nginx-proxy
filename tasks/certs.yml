@@ -29,7 +29,7 @@
     path: "{{csr_directory}}/acme.csr"
     privatekey_path: "{{private_directory}}/acme_csr_key.pem"
     common_name: "{{sites | map(attribute='host') | first}}"
-    country_name: "United States"
+    country_name: "US"
     email_address: "{{acme_account_email}}"
     subject_alt_name: "{{sites | map(attribute='host') | map('regex_replace', '^', 'DNS:') | list}}"
   register: csr_state
