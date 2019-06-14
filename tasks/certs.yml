@@ -38,7 +38,7 @@
     acme_directory: "{{acme_directory}}"
     challenge: http-01
     csr: "{{csr_directory}}/acme.csr"
-    dest: "{{certs_directory}}/acme.pem"
+    fullchain_dest: "{{certs_directory}}/acme.pem"
     acme_version: 2
     terms_agreed: yes
     force: "{{csr_state is changed}}"
@@ -72,7 +72,7 @@
     acme_directory: "{{acme_directory}}"
     challenge: http-01
     csr: "{{csr_directory}}/acme.csr"
-    dest: "{{certs_directory}}/acme.pem"
+    fullchain_dest: "{{certs_directory}}/acme.pem"
     data: "{{acme_challenge}}"
     acme_version: 2
     terms_agreed: yes
