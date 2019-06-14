@@ -17,17 +17,20 @@
 - name: Generate account key
   openssl_privatekey:
     path: "{{private_directory}}/acme_account.pem"
-    mode: u=rw,g-rwx,o-rwx
+    mode: u=rw,g=r,o-rwx
 
 - name: Generate CSR private key
   openssl_privatekey:
     path: "{{private_directory}}/acme_csr_key.pem"
-    mode: u=rw,g-rwx,o-rwx
+    mode: u=rw,g=r,o-rwx
 
 - name: Default cert signing request
   openssl_csr:
     path: "{{csr_directory}}/acme.csr"
     privatekey_path: "{{private_directory}}/acme_csr_key.pem"
+    common_name: "{{sites | map(attribute='host') | first}}"
+    country_name: "US"
+    email_address: "{{acme_account_email}}"
     subject_alt_name: "{{sites | map(attribute='host') | map('regex_replace', '^', 'DNS:') | list}}"
   register: csr_state
 
